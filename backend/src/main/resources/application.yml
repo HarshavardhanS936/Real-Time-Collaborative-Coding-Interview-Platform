@@ -6,9 +6,9 @@ spring:
     name: collaborative-coding-platform
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/coding_platform_db
-    username: postgres
-    password: password # Ensure to update with your local DB credentials
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/coding_platform_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -17,7 +17,6 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
 application:
