@@ -12,7 +12,8 @@ export const useCollaboration = (roomId, username) => {
     useEffect(() => {
         if (!roomId || !username) return;
 
-        const socketUrl = 'http://localhost:8080/ws-coding';
+        const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1';
+        const socketUrl = apiBase.replace('/api/v1', '/ws-coding');
         const client = new Client({
             webSocketFactory: () => new SockJS(socketUrl),
             reconnectDelay: 5000,
