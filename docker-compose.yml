@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: coding-db
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-coding_platform_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - coding-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: coding-backend
+    ports:
+      - "8080:8080"
+    environment:
+      # Use the Docker service name 'db' as the host
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${DB_NAME:-coding_platform_db}
+      - SPRING_DATASOURCE_USERNAME=${DB_USER:-postgres}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-password}
+    depends_on:
+      - db
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - coding-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: coding-frontend
+    ports:
+      - "3000:80" # Maps local port 3000 to Nginx port 80
+    depends_on:
+      - backend
+    networks:
+      - coding-network
+
+networks:
+  coding-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
