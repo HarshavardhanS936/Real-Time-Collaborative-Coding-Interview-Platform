@@ -6,7 +6,7 @@ services:
     container_name: coding-db
     environment:
       POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-@Harsha9306}
       POSTGRES_DB: ${DB_NAME:-coding_platform_db}
     ports:
       - "5432:5432"
@@ -26,7 +26,7 @@ services:
       # Use the Docker service name 'db' as the host
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${DB_NAME:-coding_platform_db}
       - SPRING_DATASOURCE_USERNAME=${DB_USER:-postgres}
-      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-password}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-@Harsha9306}
     depends_on:
       - db
     volumes:
